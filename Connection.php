@@ -8,6 +8,7 @@ class Connection
     public $username = "";
     public $password = "";
 
+    /*they are for connection and getting data from database*/
     private $link;
     private $result;
 
@@ -15,7 +16,7 @@ class Connection
 
     function construct()
     {
-        $this->link = mysql_connect($this->host,$this->username,$this->password);
+        $this->link = mysql_connect($this->hostname,$this->username,$this->password);
         if(!$this->link)
         {
                 die("Can't connect to host...".mysql_error());

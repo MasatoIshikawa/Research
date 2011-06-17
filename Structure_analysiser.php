@@ -5,14 +5,25 @@
  * those parts will change to $_GET[""].
  */
 
-$tablename = "Research";
-$username = "";
+$hostname = "localhost";
+$database = "research";
+$username = "root";
 $password = "";
 
 require_once("Connection.php");
 
 $db = new Connection();
 
+$db->hostname = $hostname;
+$db->database = $database;
+$db->username = $username;
+$db->password = $password;
+
+$db->construct();
+
+echo "FUCK YOU!";
+
+/*
 $mysqlquery1 = "about read all tables";
 
 $DB_tableanems[] = execution_query($mysqlquery1);
@@ -42,5 +53,6 @@ while(until end of last table with $X)
 				
 		} 
 }
+ */
 
 ?>
