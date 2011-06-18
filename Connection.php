@@ -12,8 +12,10 @@ class Connection
     private $link;
     private $result;
 
+    /*this is for MySQL query*/
     public $sql;
 
+    /*this function is for connection to database and that connection will die or not*/
     function construct()
     {
         $this->link = mysql_connect($this->hostname,$this->username,$this->password);
@@ -27,7 +29,7 @@ class Connection
         mysql_set_charset("utf8");
     }
 
-
+    /*this functin is to execute MySQL query and to get result or error from database*/
     function query($sql)
     {
         if(!empty($sql))
@@ -49,6 +51,7 @@ class Connection
         }
     }
 
+    /*this function makes connection die*/
     function destruct()
     {
         mysql_close($this->link);

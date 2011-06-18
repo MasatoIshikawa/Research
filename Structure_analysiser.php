@@ -1,10 +1,6 @@
 <?php
 
-/*
- * here is information to connect to database.
- * those parts will change to $_GET[""].
- */
-
+/*here is information to connect to database. those parts will change to $_GET[""].*/
 $hostname = "localhost";
 $database = "research";
 $username = "root";
