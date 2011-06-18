@@ -1,10 +1,21 @@
 <?php
 
-/*here is information to connect to database. those parts will change to $_GET[""].*/
+/*indefinite number infomation*/
+/******************************/
+
+/*here is information to connect to database. those parts will change to $_GET[""]*/
 $hostname = "localhost";
 $database = "research";
 $username = "root";
 $password = "";
+
+/*all queries*/
+$show_tables = "";
+
+/******************************/
+
+
+
 
 require_once("Connection.php");
 
@@ -17,22 +28,34 @@ $db->password = $password;
 
 $db->construct();
 
-$sql = "SELECT * FROM `test`";
+/*this sql query is for reading all tables*/
+$show_tables = "show tables";
 
-$result = $db->query($sql);
+$result = $db->query($show_tables);
 
-/*this is test about connection to database*/
-while($row = mysql_fetch_array($result,MYSQL_ASSOC)){
-    echo '<pre>';
-    var_dump($row);
-    echo '</pre>';
+/*query result is {["Tables_in_research"] = "tablename"}*/
+while( $row = mysql_fetch_array($result,MYSQL_NUM) ){
+    $db_all_tablenames[] = $row[0];    
 }
 
-$db->destruct();
+/*this is for count which how much dattabase has tables*/
+$db_all_tablenames_count = count($db_all_tablenames);
+
+for( $x = 0; $x<= $db_all_tablenames_count-1; $x++ ){
+    $show_clums = "describe $db_all_tablenames[$x]";
+    
+    $result = $db->query($show_clums);
+    
+    while( $row = mysql_fetch_array($result,MYSQL_ASSOC) ){
+        ${'db_'.$db_all_tablenames[$x].'_all_clums'}[] = $row["Field"];
+        
+        if( !empty($row["Key"]) ){
+            ${'db_'.$db_all_tablenames[$x].'_key'} = $row["Field"];
+        }
+    }
+}
 
 /*
-$mysqlquery1 = "about read all tables";
-
 $DB_tableanems[] = execution_query($mysqlquery1);
 
 while(until end of last table with $X)
@@ -61,5 +84,7 @@ while(until end of last table with $X)
 		} 
 }
  */
+
+$db->destruct();
 
 ?>
