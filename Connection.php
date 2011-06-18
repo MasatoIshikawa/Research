@@ -13,7 +13,7 @@ class Connection
     private $result;
 
     /*this is for MySQL query*/
-    public $sql;
+    private $sql;
 
     /*this function is for connection to database and that connection will die or not*/
     function construct()

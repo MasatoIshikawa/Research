@@ -17,7 +17,18 @@ $db->password = $password;
 
 $db->construct();
 
-echo "FUCK YOU!";
+$sql = "SELECT * FROM `test`";
+
+$result = $db->query($sql);
+
+/*this is test about connection to database*/
+while($row = mysql_fetch_array($result,MYSQL_ASSOC)){
+    echo '<pre>';
+    var_dump($row);
+    echo '</pre>';
+}
+
+$db->destruct();
 
 /*
 $mysqlquery1 = "about read all tables";
