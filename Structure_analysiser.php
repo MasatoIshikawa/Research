@@ -38,6 +38,7 @@ while( $row = mysql_fetch_array($result,MYSQL_NUM) ){
 /*this is for count which how much dattabase has tables*/
 $db_all_tablenames_count = count($db_all_tablenames);
 
+/*this part searches each clums and primary keys*/
 for( $x = 0; $x <= $db_all_tablenames_count-1; $x++ ){
     $show_clums = "describe $db_all_tablenames[$x]";
     
@@ -54,6 +55,7 @@ for( $x = 0; $x <= $db_all_tablenames_count-1; $x++ ){
     }
 }
 
+/*this part searches which key connect to which tables's clums*/
 for( $x = 0; $x <= $db_all_tablenames_count-1; $x++ ){
     $Key = ${'db_'.$db_all_tablenames[$x].'_key'};
     
