@@ -63,7 +63,7 @@ for( $x = 0; $x <= $db_all_tablenames_count-1; $x++ ){
         if( $x !== $y ){
             for( $z = 0; $z <= ${'db_'.$db_all_tablenames[$y].'_all_clums_count'}-1; $z++ ){
                 if( ${'db_'.$db_all_tablenames[$y].'_all_clums'}[$z] === $Key ){
-                    echo ${'db_'.$db_all_tablenames[$y].'_all_clums'}[$z];
+                    ${'db_'.$db_all_tablenames[$x].'_relation'}[] = $db_all_tablenames[$y];
                 }
             }
         }
