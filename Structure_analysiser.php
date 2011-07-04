@@ -5,7 +5,7 @@
 
 /*here is information to connect to database. those parts will change to $_GET[""]*/
 $hostname = "localhost";
-$database = "research";
+$database = "new_kyomu";
 $username = "root";
 $password = "";
 
@@ -35,6 +35,12 @@ while( $row = mysql_fetch_array($result,MYSQL_NUM) ){
     $db_all_tablenames[] = $row[0];    
 }
 
+/*showing tadabase all tables*/
+echo "***** Existing Tables[$database] *****";
+echo "<pre>";
+echo var_dump($db_all_tablenames);
+echo "</pre>";
+
 /*this is for count which how much dattabase has tables*/
 $db_all_tablenames_count = count($db_all_tablenames);
 
@@ -49,8 +55,14 @@ for( $x = 0; $x <= $db_all_tablenames_count-1; $x++ ){
         
         ${'db_'.$db_all_tablenames[$x].'_all_clums_count'} = count(${'db_'.$db_all_tablenames[$x].'_all_clums'});
         
-        if( !empty($row["Key"]) ){
+        if( $row["Key"] === "PRI" ){
             ${'db_'.$db_all_tablenames[$x].'_key'} = $row["Field"];
+            
+            /*showing clums*/
+            echo "***** Existing Clums[$db_all_tablenames[$x]] *****";
+            echo "<pre>";
+            echo var_dump(${'db_'.$db_all_tablenames[$x].'_key'});
+            echo "</pre>";
         }
     }
 }
@@ -64,6 +76,12 @@ for( $x = 0; $x <= $db_all_tablenames_count-1; $x++ ){
             for( $z = 0; $z <= ${'db_'.$db_all_tablenames[$y].'_all_clums_count'}-1; $z++ ){
                 if( ${'db_'.$db_all_tablenames[$y].'_all_clums'}[$z] === $Key ){
                     ${'db_'.$db_all_tablenames[$x].'_relation'}[] = $db_all_tablenames[$y];
+                    
+                    /*showing connection*/
+                    echo "***** Existing Connections[$db_all_tablenames[$x]] *****";
+                    echo "<pre>";
+                    echo var_dump(${'db_'.$db_all_tablenames[$x].'_relation'});
+                    echo "</pre>";
                 }
             }
         }
