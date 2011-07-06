@@ -4,6 +4,9 @@
  * clum->column!!!
  */
 
+/*Set the error reporting level*/
+error_reporting(0);
+
 /*indefinite number infomation*/
 /******************************/
 
@@ -79,17 +82,22 @@ for( $x = 0; $x <= $db_all_tablenames_count-1; $x++ ){
         if( $x !== $y ){
             for( $z = 0; $z <= ${'db_'.$db_all_tablenames[$y].'_all_clums_count'}-1; $z++ ){
                 if( ${'db_'.$db_all_tablenames[$y].'_all_clums'}[$z] === $Key ){
-                    ${'db_'.$db_all_tablenames[$x].'_relation'}[] = $db_all_tablenames[$y];
-                    
-                    /*showing connection*/
-                    echo "***** Existing Connections[$db_all_tablenames[$x]] *****";
-                    echo "<pre>";
-                    echo var_dump(${'db_'.$db_all_tablenames[$x].'_relation'});
-                    echo "</pre>";
+                    ${'db_'.$db_all_tablenames[$x].'_relation'}[] = $db_all_tablenames[$y];                                    
                 }
             }
         }
     }
+    
+    /*showing connection*/
+    echo "***** Existing Connections[$db_all_tablenames[$x]] *****";
+    echo "<pre>";
+    if(is_null(${'db_'.$db_all_tablenames[$x].'_relation'}) ){
+        echo "Nothing!";
+    }
+    else{
+        echo var_dump(${'db_'.$db_all_tablenames[$x].'_relation'});
+    }
+    echo "</pre>";
 }
 
 $db->destruct();
