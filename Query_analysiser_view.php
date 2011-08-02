@@ -39,8 +39,10 @@ for($i = 0; $i < count($update_set); $i++){
     echo "***** Used Tables *****";
     echo "<br>";
     
+    $update_set_table = $Query_analysiser->update_query_table_extractor($queries);
+    
     echo "<br>";
-    echo $Query_analysiser->update_query_table_extractor($queries);
+    echo $update_set_table;
     echo "<br>";
 }
 
@@ -51,5 +53,17 @@ echo "<br>";
 $db_update = $Query_analysiser->update_zendframework_function_extractor($program_contents);
 
 $Query_analysiser->result_viewer($db_update);
+
+echo "<br>";
+echo "***** Used SQL *****";
+echo "<br>";
+
+for($i = 0; $i < count($db_update); $i++){
+    $db_update_table = $Query_analysiser->update_zendframework_function_table_extractor($db_update[$i]);
+   
+    echo "<br>";
+    echo $db_update_table;
+    echo "<br>";
+}
 
 ?>

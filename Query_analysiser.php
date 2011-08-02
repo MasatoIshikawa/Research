@@ -14,7 +14,37 @@ class Query_analysiser{
             $program_contents[$i] = trim($program_contents[$i]);
         }
 
-        return $program_contents;
+        return $program_contents; 
+    }
+    
+    function result_viewer($view_content){ 
+        for($i = 0; $i < count($view_content); $i++){
+            echo "<br>";
+            echo $view_content[$i];
+            echo "<br>";
+        }
+    }
+
+    function query_cleaner($query){
+        /*all space change english space*/
+        $query = preg_replace('/\s+/', ' ', $query);
+
+        /*to erase space*/
+        $queries = explode(' ', $query);
+
+        /*to erase '*/
+        $queries = str_replace("'","",$queries);
+        
+        /*to erase "*/
+        $queries = str_replace('"','',$queries);
+        
+        /*to erase (*/
+        $queries = str_replace("(","",$queries);
+        
+        /*to erase ,*/
+        $queries = str_replace(",","",$queries);
+        
+        return $queries;
     }
     
     function update_query_extractor($program_contents){
@@ -31,25 +61,6 @@ class Query_analysiser{
         
         return $update_set;
     }
-
-    function result_viewer($view_content){
-        for($i = 0; $i < count($view_content); $i++){
-            echo "<br>";
-            echo $view_content[$i];
-            echo "<br>";
-        }
-    }
-
-    function query_cleaner($query){
-        $query = preg_replace('/\s+/', ' ', $query);//???
-
-        $queries = explode(' ', $query);
-
-        $queries = str_replace("'","",$queries);
-        $queries = str_replace('"','',$queries);
-        
-        return $queries;
-    }
     
     function update_query_table_extractor($queries){
         for($i = 0; $i < count($queries); $i++){
@@ -64,7 +75,7 @@ class Query_analysiser{
             }
         }
     }
-
+    
     function update_zendframework_function_extractor($program_contents){
         /*picking out "db->update" from program code*/
         for($i = 0; $i < count($program_contents); $i++){      
@@ -76,6 +87,21 @@ class Query_analysiser{
         }
         
         return $db_update;
+    }
+    
+    function update_zendframework_function_table_extractor($db_update){
+        /*
+         * . : searching both side.
+         * [\(] and [\)] : it means [(] and [)].
+         * g : multi lines.
+         * + : multi characters.
+         * ? : short matching.
+         */        
+        preg_match("/\(.+?\,/s", $db_update, $case_arc_comma);
+        
+        $db_update_table = $this->query_cleaner($case_arc_comma[0]);
+        
+        return $db_update_table[0];
     }
 }
 
