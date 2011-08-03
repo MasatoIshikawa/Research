@@ -8,7 +8,7 @@ echo '<br>';
 echo '***** Keyword [;] *****';
 echo '<br>';
 
-$program_contents = $Query_analysiser->semicolon_separator();
+$program_contents = $Query_analysiser->semicolon_separator('C:\xampp\Code\extensions\subject\SubjectModel.php');
 
 echo '<pre>';
 print_r($program_contents);
@@ -80,20 +80,19 @@ for($i = 0; $i < count($db_update); $i++){
 }
 
 echo '<br>';
-echo '***** Table Names *****';
+echo '***** Table Name Searching *****';
 echo '<br>';
 
 $table_names = array('tannin', 'years', 'classes', 'teachers', 'campuses', 'courses', 'subjects', 'semesters');
 
+/*
 echo '<pre>';
 print_r($table_names);
 echo '</pre>';
+ * 
+ */
 
-echo '<br>';
-echo '***** Table Name Searching *****';
-echo '<br>';
-
-$used_table_numbers = $Query_analysiser->table_names_searching($table_names);
+$used_table_numbers = $Query_analysiser->table_names_searching($table_names, 'C:\xampp\Code\extensions\subject\SubjectModel.php');
 
 echo '<pre>';
 print_r($used_table_numbers);

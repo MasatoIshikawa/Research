@@ -10,18 +10,25 @@
 
 class Query_analysiser
 {
-    public function semicolon_separator()
+    private function read_file($read_file_name)
     {
-        $read_file_name = 'C:\xampp\Code\application\baseModels\ConfigBaseModel.php';
-        
         echo '<br>';
         echo "***** $read_file_name *****";
         echo '<br>';
         
         /*getting program code from directory*/
-        //$program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
         $program_content = file_get_contents($read_file_name);
+        
+        return $program_content;
+    }
 
+    public function semicolon_separator($read_file_name)
+    {
+        //$read_file_name = 'C:\xampp\Code\extensions\subject\SubjectModel.php';
+        //$read_file_name = 'C:\xampp\Code\application\baseModels\ConfigBaseModel.php';
+
+        $program_content = $this->read_file($read_file_name);
+        
         /*dividing program code by ';'*/
         $program_contents = explode(';', $program_content);
         
@@ -117,23 +124,24 @@ class Query_analysiser
         return $db_update_table[0];
     }
     
-    public function table_names_searching($table_names)
+    public function table_names_searching($table_names, $read_file_name)
     {
         /*getting program code from directory*/
-        $program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
+        //$program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
+        
+        //$read_file_name = 'C:\xampp\Code\extensions\subject\SubjectModel.php';
+
+        $program_content = $this->read_file($read_file_name);
                 
         for($i = 0; $i < count($table_names); $i++) {            
             if (strstr($program_content, '$'.$table_names[$i])) {
-                /*this case might be just variable*/
-                
+                /*this case might be just variable*/      
                 $used_table_numbers["$table_names[$i]"] = 0;
             } elseif (strstr($program_content, $table_names[$i])) {
                 /*this case is the ture tables with a high rate*/
-                
                 $used_table_numbers["$table_names[$i]"] = 1;
             } else {
                 /*nothing anything*/
-                
                 $used_table_numbers["$table_names[$i]"] = 0;
             }
         }
