@@ -1,37 +1,40 @@
 <?php
 
-class Query_analysiser{
-    
-    function semicolon_separator(){
+/*
+ * about this file.
+ */
+
+/*
+ * about this class.
+ */
+
+class Query_analysiser
+{
+    public function semicolon_separator()
+    {
+        $read_file_name = 'C:\xampp\Code\application\baseModels\ConfigBaseModel.php';
+        
+        echo '<br>';
+        echo "***** $read_file_name *****";
+        echo '<br>';
         
         /*getting program code from directory*/
-        $program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
+        //$program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
+        $program_content = file_get_contents($read_file_name);
 
-        /*dividing program code by ";"*/
+        /*dividing program code by ';'*/
         $program_contents = explode(';', $program_content);
         
         /**/
-        for($i = 0; $i < count($program_contents); $i++){
+        for($i = 0; $i < count($program_contents); $i++) {
             $program_contents[$i] = trim($program_contents[$i]);
         }
 
         return $program_contents; 
     }
-    
-    /*stupid function*/
-    /*
-    function result_viewer($view_content){ 
-        for($i = 0; $i < count($view_content); $i++){
-            echo "<br>";
-            echo $view_content[$i];
-            echo "<br>";
-        }
-    }
-     * 
-     */
 
-    function query_cleaner($query){
-        
+    public function query_cleaner($query)
+    {
         /*all space change english space*/
         $query = preg_replace('/\s+/', ' ', $query);
 
@@ -45,22 +48,22 @@ class Query_analysiser{
         $queries = str_replace('"','',$queries);
         
         /*to erase (*/
-        $queries = str_replace("(","",$queries);
+        $queries = str_replace('(','',$queries);
         
         /*to erase ,*/
-        $queries = str_replace(",","",$queries);
+        $queries = str_replace(',','',$queries);
         
         return $queries;
     }
     
-    function update_query_extractor($program_contents){
-        
-        /*1:picking out "update" from program code. 2:picking our "set" from program code*/
-        for($i = 0; $i < count($program_contents); $i++){ 
+    public function update_query_extractor($program_contents)
+    {
+        /*1:picking out 'update' from program code. 2:picking our 'set' from program code*/
+        for($i = 0; $i < count($program_contents); $i++) { 
             $keyword = stristr($program_contents[$i], 'update');
-            if($keyword){
+            if ($keyword) {
                 $keyword_sub = stristr($keyword, 'set');
-                if($keyword_sub){
+                if ($keyword_sub) {
                     $update_set[] = $program_contents[$i];
                 }
             }
@@ -69,13 +72,13 @@ class Query_analysiser{
         return $update_set;
     }
     
-    function update_query_table_extractor($queries){
-        
-        for($i = 0; $i < count($queries); $i++){
-            if(!strcasecmp($queries[$i], "UPDATE")){
-                for($j = $i; $j < count($queries); $j++){
-                    if(!strcasecmp($queries[$j], "SET")){
-                        if($i+2 === $j){
+    public function update_query_table_extractor($queries)
+    {
+        for($i = 0; $i < count($queries); $i++) {
+            if (!strcasecmp($queries[$i], 'UPDATE')) {
+                for($j = $i; $j < count($queries); $j++) {
+                    if (!strcasecmp($queries[$j], 'SET')) {
+                        if ($i+2 === $j) {
                             return $queries[$i+1];
                         }
                     }
@@ -84,13 +87,13 @@ class Query_analysiser{
         }
     }
     
-    function update_zendframework_function_extractor($program_contents){
-        
-        /*picking out "db->update" from program code*/
-        for($i = 0; $i < count($program_contents); $i++){     
+    public function update_zendframework_function_extractor($program_contents)
+    {
+        /*picking out 'db->update' from program code*/
+        for($i = 0; $i < count($program_contents); $i++) {     
             $keyword = stristr($program_contents[$i], 'db->update');
             
-            if($keyword){
+            if ($keyword) {
                 $db_update[] = $program_contents[$i];
             }
         }
@@ -98,8 +101,8 @@ class Query_analysiser{
         return $db_update;
     }
     
-    function update_zendframework_function_table_extractor($db_update){
-        
+    public function update_zendframework_function_table_extractor($db_update)
+    {
         /*
          * . : searching both side.
          * [\(] and [\)] : it means [(] and [)].
@@ -107,30 +110,28 @@ class Query_analysiser{
          * + : multi characters.
          * ? : short matching.
          */        
-        preg_match("/\(.+?\,/s", $db_update, $case_arc_comma);
+        preg_match('/\(.+?\,/s', $db_update, $case_arc_comma);
         
         $db_update_table = $this->query_cleaner($case_arc_comma[0]);
         
         return $db_update_table[0];
     }
     
-    function table_names_searching($table_names){
-                
+    public function table_names_searching($table_names)
+    {
         /*getting program code from directory*/
         $program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
                 
-        for($i = 0; $i < count($table_names); $i++){            
-            if(strstr($program_content, "$".$table_names[$i])){
+        for($i = 0; $i < count($table_names); $i++) {            
+            if (strstr($program_content, '$'.$table_names[$i])) {
                 /*this case might be just variable*/
                 
                 $used_table_numbers["$table_names[$i]"] = 0;
-            }
-            elseif(strstr($program_content, $table_names[$i])){
+            } elseif (strstr($program_content, $table_names[$i])) {
                 /*this case is the ture tables with a high rate*/
                 
                 $used_table_numbers["$table_names[$i]"] = 1;
-            }
-            else{
+            } else {
                 /*nothing anything*/
                 
                 $used_table_numbers["$table_names[$i]"] = 0;
@@ -138,6 +139,11 @@ class Query_analysiser{
         }
         
         return $used_table_numbers;
+    }
+    
+    public function query_prepare_zendframework_function_extractor()
+    {
+                
     }
 }
 
