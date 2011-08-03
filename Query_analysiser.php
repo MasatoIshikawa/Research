@@ -3,8 +3,9 @@
 class Query_analysiser{
     
     function semicolon_separator(){
+        
         /*getting program code from directory*/
-        $program_content = @file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
+        $program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
 
         /*dividing program code by ";"*/
         $program_contents = explode(';', $program_content);
@@ -17,6 +18,8 @@ class Query_analysiser{
         return $program_contents; 
     }
     
+    /*stupid function*/
+    /*
     function result_viewer($view_content){ 
         for($i = 0; $i < count($view_content); $i++){
             echo "<br>";
@@ -24,8 +27,11 @@ class Query_analysiser{
             echo "<br>";
         }
     }
+     * 
+     */
 
     function query_cleaner($query){
+        
         /*all space change english space*/
         $query = preg_replace('/\s+/', ' ', $query);
 
@@ -48,6 +54,7 @@ class Query_analysiser{
     }
     
     function update_query_extractor($program_contents){
+        
         /*1:picking out "update" from program code. 2:picking our "set" from program code*/
         for($i = 0; $i < count($program_contents); $i++){ 
             $keyword = stristr($program_contents[$i], 'update');
@@ -63,6 +70,7 @@ class Query_analysiser{
     }
     
     function update_query_table_extractor($queries){
+        
         for($i = 0; $i < count($queries); $i++){
             if(!strcasecmp($queries[$i], "UPDATE")){
                 for($j = $i; $j < count($queries); $j++){
@@ -77,8 +85,9 @@ class Query_analysiser{
     }
     
     function update_zendframework_function_extractor($program_contents){
+        
         /*picking out "db->update" from program code*/
-        for($i = 0; $i < count($program_contents); $i++){      
+        for($i = 0; $i < count($program_contents); $i++){     
             $keyword = stristr($program_contents[$i], 'db->update');
             
             if($keyword){
@@ -90,6 +99,7 @@ class Query_analysiser{
     }
     
     function update_zendframework_function_table_extractor($db_update){
+        
         /*
          * . : searching both side.
          * [\(] and [\)] : it means [(] and [)].
@@ -102,6 +112,32 @@ class Query_analysiser{
         $db_update_table = $this->query_cleaner($case_arc_comma[0]);
         
         return $db_update_table[0];
+    }
+    
+    function table_names_searching($table_names){
+                
+        /*getting program code from directory*/
+        $program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
+                
+        for($i = 0; $i < count($table_names); $i++){            
+            if(strstr($program_content, "$".$table_names[$i])){
+                /*this case might be just variable*/
+                
+                $used_table_numbers["$table_names[$i]"] = 0;
+            }
+            elseif(strstr($program_content, $table_names[$i])){
+                /*this case is the ture tables with a high rate*/
+                
+                $used_table_numbers["$table_names[$i]"] = 1;
+            }
+            else{
+                /*nothing anything*/
+                
+                $used_table_numbers["$table_names[$i]"] = 0;
+            }
+        }
+        
+        return $used_table_numbers;
     }
 }
 
