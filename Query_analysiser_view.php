@@ -84,7 +84,7 @@ print_r($used_table_numbers);
 echo '</pre>';
 
 echo '<br>';
-echo '********** Variable Case **********';
+echo '********** Variable Case[test code] **********';
 echo '<br>';
 
 /********************************************************/
