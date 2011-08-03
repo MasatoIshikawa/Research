@@ -24,9 +24,6 @@ class Query_analysiser
 
     public function semicolon_separator($read_file_name)
     {
-        //$read_file_name = 'C:\xampp\Code\extensions\subject\SubjectModel.php';
-        //$read_file_name = 'C:\xampp\Code\application\baseModels\ConfigBaseModel.php';
-
         $program_content = $this->read_file($read_file_name);
         
         /*dividing program code by ';'*/
@@ -48,6 +45,7 @@ class Query_analysiser
         /*to erase space*/
         $queries = explode(' ', $query);
 
+        /*need to add "for"*/
         /*to erase '*/
         $queries = str_replace("'","",$queries);
         
@@ -94,21 +92,35 @@ class Query_analysiser
         }
     }
     
-    public function update_zendframework_function_extractor($program_contents)
+    public function zendframework_function_extractor($program_contents, $function_name)
     {
         /*picking out 'db->update' from program code*/
         for($i = 0; $i < count($program_contents); $i++) {     
-            $keyword = stristr($program_contents[$i], 'db->update');
+            $keyword = stristr($program_contents[$i], $function_name);
             
             if ($keyword) {
-                $db_update[] = $program_contents[$i];
+                $function_part[] = $program_contents[$i];
             }
         }
         
-        return $db_update;
+        return $function_part;
     }
     
-    public function update_zendframework_function_table_extractor($db_update)
+    public function zendframework_function_extractor_2nd($program_contents, $function_name)
+    {
+        /*picking out 'db->update' from program code*/
+        for($i = 0; $i < count($program_contents); $i++) {     
+            $keyword = stristr($program_contents[$i], $function_name);
+            
+            if ($keyword) {
+                $function_part[$i] = $program_contents[$i];
+            }
+        }
+        
+        return $function_part;
+    }
+
+    public function zendframework_function_update_extractor($db_update)
     {
         /*
          * . : searching both side.
@@ -124,13 +136,15 @@ class Query_analysiser
         return $db_update_table[0];
     }
     
+    public function zendframework_function_prepare_query_extractor()
+    {
+        preg_match('/\(.+?\)/s', $db_update, $case_arc);
+        
+        
+    }
+
     public function table_names_searching($table_names, $read_file_name)
     {
-        /*getting program code from directory*/
-        //$program_content = file_get_contents('C:\xampp\Code\extensions\subject\SubjectModel.php');
-        
-        //$read_file_name = 'C:\xampp\Code\extensions\subject\SubjectModel.php';
-
         $program_content = $this->read_file($read_file_name);
                 
         for($i = 0; $i < count($table_names); $i++) {            
@@ -147,11 +161,6 @@ class Query_analysiser
         }
         
         return $used_table_numbers;
-    }
-    
-    public function query_prepare_zendframework_function_extractor()
-    {
-                
     }
 }
 
