@@ -10,6 +10,9 @@
 
 class Query_analysiser
 {
+    /*
+     * 
+     */
     private function read_file($read_file_name)
     {
         echo '<br>';
@@ -22,6 +25,9 @@ class Query_analysiser
         return $program_content;
     }
 
+    /*
+     * 
+     */
     public function semicolon_separator($read_file_name)
     {
         $program_content = $this->read_file($read_file_name);
@@ -37,6 +43,9 @@ class Query_analysiser
         return $program_contents; 
     }
 
+    /*
+     * 
+     */
     public function query_cleaner($query)
     {
         /*all space change english space*/
@@ -61,6 +70,9 @@ class Query_analysiser
         return $queries;
     }
     
+    /*
+     * 
+     */
     public function update_query_extractor($program_contents)
     {
         /*1:picking out 'update' from program code. 2:picking our 'set' from program code*/
@@ -77,6 +89,9 @@ class Query_analysiser
         return $update_set;
     }
     
+    /*
+     * 
+     */
     public function update_query_table_extractor($queries)
     {
         for($i = 0; $i < count($queries); $i++) {
@@ -92,6 +107,9 @@ class Query_analysiser
         }
     }
     
+    /*
+     * 
+     */
     public function zendframework_function_extractor($program_contents, $function_name)
     {
         /*picking out 'db->update' from program code*/
@@ -106,6 +124,9 @@ class Query_analysiser
         return $function_part;
     }
     
+    /*
+     * 
+     */
     public function zendframework_function_extractor_2nd($program_contents, $function_name)
     {
         /*picking out 'db->update' from program code*/
@@ -120,6 +141,9 @@ class Query_analysiser
         return $function_part;
     }
 
+    /*
+     * kinda bad one.
+     */
     public function zendframework_function_update_extractor($db_update)
     {
         /*
@@ -136,13 +160,38 @@ class Query_analysiser
         return $db_update_table[0];
     }
     
+    /*
+     * more good one.
+     */
+    public function zendframework_function_table_extractor($function_part)
+    {
+        /*
+         * . : searching both side.
+         * [\(] and [\)] : it means [(] and [)].
+         * m : multi lines.
+         * + : multi characters.
+         * ? : short matching.
+         */
+        preg_match('/\(.+?\,/m', $function_part, $case_arc_comma);
+        
+        $db_zendframework_table = $this->query_cleaner($case_arc_comma[0]);
+        
+        return $db_zendframework_table[0];
+    }
+    
+    /*
     public function zendframework_function_prepare_query_extractor()
     {
         preg_match('/\(.+?\)/s', $db_update, $case_arc);
         
         
     }
+     * 
+     */
 
+    /*
+     * 
+     */
     public function table_names_searching($table_names, $read_file_name)
     {
         $program_content = $this->read_file($read_file_name);
