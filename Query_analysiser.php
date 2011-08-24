@@ -86,7 +86,12 @@ class Query_analysiser
             }
         }
         
-        return $update_set;
+        if (isset($update_set)) {
+            return $update_set;
+        }
+        else {
+            return FALSE;
+        }
     }
     
     /*

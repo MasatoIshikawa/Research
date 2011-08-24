@@ -14,9 +14,12 @@ echo '<br>';
 echo '***** Keyword [;] *****';
 echo '<br>';
 
+/*
 echo '<pre>';
 print_r($program_contents);
 echo '</pre>';
+ * 
+ */
 
 echo '<br>';
 echo '***** Keyword [update+set] *****';
@@ -71,6 +74,7 @@ for($i = 0; $i < count($db_update); $i++) {
     echo '<br>';
 }
 
+/*
 echo '<br>';
 echo '********** Table Name Searching **********';
 echo '<br>';
@@ -82,13 +86,19 @@ $used_table_numbers = $Query_analysiser->table_names_searching($table_names, 'C:
 echo '<pre>';
 print_r($used_table_numbers);
 echo '</pre>';
+ * 
+ */
 
 echo '<br>';
 echo '********** Variable Case[test code] **********';
 echo '<br>';
 
+/*
+ * this part is original code.
+ */
 /********************************************************/
-$program_content = '$table = "test";
+$program_content = 
+'$table = "test";
 $params = array (
     "name" => "a",
     "detail" => "a",
@@ -160,6 +170,208 @@ foreach( $db_prepare as $key => $value ) {
 }
 
 $program_contents = $Query_analysiser->semicolon_separator('C:\xampp\Code\extensions\subject\SubjectModel.php');
+
+echo '<br>';
+echo "***** Keyword[db->insert] *****";
+echo '<br>';
+
+$db_insert = $Query_analysiser->zendframework_function_extractor($program_contents, 'db->insert');
+
+echo '<pre>';
+print_r($db_insert);
+echo '</pre>';
+
+for($i = 0; $i < count($db_insert); $i++) {
+    $db_insert_table = $Query_analysiser->zendframework_function_table_extractor($db_insert[$i]);
+    
+    echo '<br>';
+    echo "***** Used Tables[$i] *****";
+    echo '<br>';
+    
+    echo '<br>';
+    echo $db_insert_table;
+    echo '<br>';
+}
+
+echo '<br>';
+echo "***** Keyword[db->delete] *****";
+echo '<br>';
+
+$db_delete = $Query_analysiser->zendframework_function_extractor($program_contents, 'db->delete');
+
+echo '<pre>';
+print_r($db_delete);
+echo '</pre>';
+
+for($i = 0; $i < count($db_delete); $i++) {
+    $db_delete_table = $Query_analysiser->zendframework_function_table_extractor($db_delete[$i]);
+    
+    echo '<br>';
+    echo "***** Used Tables[$i] *****";
+    echo '<br>';
+    
+    echo '<br>';
+    echo $db_delete_table;
+    echo '<br>';
+}
+
+$program_contents = $Query_analysiser->semicolon_separator('C:\xampp\Code\extensions\tannin\TanninModel.php');
+
+echo '<br>';
+echo '***** Keyword [update+set] *****';
+echo '<br>';
+
+$update_set = $Query_analysiser->update_query_extractor($program_contents);
+
+if (!isset($update_set)) {
+    echo '<pre>';
+    print_r($update_set);
+    echo '</pre>';
+}
+else {
+    echo '<pre>';
+    echo 'Nothing';
+    echo '</pre>';
+}
+
+if (!isset($update_set)) {
+    for($i = 0; $i < count($update_set); $i++) {
+        $queries = $Query_analysiser->query_cleaner($update_set[$i]);
+
+        echo '<br>';
+        echo "***** Used Tables[$i] *****";
+        echo '<br>';
+
+        $update_set_table = $Query_analysiser->update_query_table_extractor($queries);
+
+        echo '<br>';
+        echo $update_set_table;
+        echo '<br>';
+    }
+}
+
+echo '<br>';
+echo '***** Keyword [db->update] *****';
+echo '<br>';
+
+$db_update = $Query_analysiser->zendframework_function_extractor($program_contents, 'db->update');
+
+echo '<pre>';
+print_r($db_update);
+echo '</pre>';
+
+for($i = 0; $i < count($db_update); $i++) {
+    $db_update_table = $Query_analysiser->zendframework_function_update_extractor($db_update[$i]);
+    
+    echo '<br>';
+    echo "***** Used Tables[$i] *****";
+    echo '<br>';
+    
+    echo '<br>';
+    echo $db_update_table;
+    echo '<br>';
+}
+
+echo '<br>';
+echo "***** Keyword[db->insert] *****";
+echo '<br>';
+
+$db_insert = $Query_analysiser->zendframework_function_extractor($program_contents, 'db->insert');
+
+echo '<pre>';
+print_r($db_insert);
+echo '</pre>';
+
+for($i = 0; $i < count($db_insert); $i++) {
+    $db_insert_table = $Query_analysiser->zendframework_function_table_extractor($db_insert[$i]);
+    
+    echo '<br>';
+    echo "***** Used Tables[$i] *****";
+    echo '<br>';
+    
+    echo '<br>';
+    echo $db_insert_table;
+    echo '<br>';
+}
+
+echo '<br>';
+echo "***** Keyword[db->delete] *****";
+echo '<br>';
+
+$db_delete = $Query_analysiser->zendframework_function_extractor($program_contents, 'db->delete');
+
+echo '<pre>';
+print_r($db_delete);
+echo '</pre>';
+
+for($i = 0; $i < count($db_delete); $i++) {
+    $db_delete_table = $Query_analysiser->zendframework_function_table_extractor($db_delete[$i]);
+    
+    echo '<br>';
+    echo "***** Used Tables[$i] *****";
+    echo '<br>';
+    
+    echo '<br>';
+    echo $db_delete_table;
+    echo '<br>';
+}
+
+$program_contents = $Query_analysiser->semicolon_separator('C:\xampp\Code\extensions\teacher\TeacherModel.php');
+
+echo '<br>';
+echo '***** Keyword [update+set] *****';
+echo '<br>';
+
+$update_set = $Query_analysiser->update_query_extractor($program_contents);
+
+if (!isset($update_set)) {
+    echo '<pre>';
+    print_r($update_set);
+    echo '</pre>';
+}
+else {
+    echo '<pre>';
+    echo 'Nothing';
+    echo '</pre>';
+}
+
+if (!isset($update_set)) {
+    for($i = 0; $i < count($update_set); $i++) {
+        $queries = $Query_analysiser->query_cleaner($update_set[$i]);
+
+        echo '<br>';
+        echo "***** Used Tables[$i] *****";
+        echo '<br>';
+
+        $update_set_table = $Query_analysiser->update_query_table_extractor($queries);
+
+        echo '<br>';
+        echo $update_set_table;
+        echo '<br>';
+    }
+}
+
+echo '<br>';
+echo '***** Keyword [db->update] *****';
+echo '<br>';
+
+$db_update = $Query_analysiser->zendframework_function_extractor($program_contents, 'db->update');
+
+echo '<pre>';
+print_r($db_update);
+echo '</pre>';
+
+for($i = 0; $i < count($db_update); $i++) {
+    $db_update_table = $Query_analysiser->zendframework_function_update_extractor($db_update[$i]);
+    
+    echo '<br>';
+    echo "***** Used Tables[$i] *****";
+    echo '<br>';
+    
+    echo '<br>';
+    echo $db_update_table;
+    echo '<br>';
+}
 
 echo '<br>';
 echo "***** Keyword[db->insert] *****";
